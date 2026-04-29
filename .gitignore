@@ -14,6 +14,7 @@
 /connections
 /datasets
 /deployments
+/evaluationrules
 /indexes
 
 # Local env
