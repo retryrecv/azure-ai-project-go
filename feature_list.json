@@ -317,7 +317,7 @@
       "Run: go test ./azaiprojects/datasets/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "datasets-client-list-and-list-versions",
