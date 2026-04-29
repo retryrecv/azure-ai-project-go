@@ -20,6 +20,8 @@ const scopeAIAzureCom = "https://ai.azure.com/.default"
 type Client struct {
 	endpoint   string
 	apiVersion string
+	cred       azcore.TokenCredential
+	opts       ClientOptions
 	pl         runtime.Pipeline
 }
 
@@ -52,6 +54,8 @@ func NewClient(endpoint string, cred azcore.TokenCredential, opts *ClientOptions
 	return &Client{
 		endpoint:   endpoint,
 		apiVersion: apiVersion,
+		cred:       cred,
+		opts:       *opts,
 		pl:         pl,
 	}, nil
 }
