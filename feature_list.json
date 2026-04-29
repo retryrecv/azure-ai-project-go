@@ -1055,34 +1055,34 @@
     "subTasks": [
       {
         "subject": "Survey TS src/api/beta/toolboxes/operations.ts; note ToolboxObject + ToolUnion fields",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create azaiprojects/beta/toolboxes/models.go (ToolboxObject; ToolUnion as json.RawMessage)",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create client.go with foundry-features header",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Implement List, Get, Update (PATCH defaultVersion), Delete",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Implement ListVersions, GetVersion, CreateVersion, DeleteVersion",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Add unit tests for each op",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Run: go test ./azaiprojects/beta/toolboxes/... \u2014 all green",
-        "passes": false
+        "passes": true
       }
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "beta-schedules",
