@@ -243,7 +243,7 @@
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "indexes-client-list-versions",
