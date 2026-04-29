@@ -257,7 +257,7 @@
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "indexes-client-get",
@@ -271,7 +271,7 @@
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "indexes-client-create-or-update",
@@ -286,7 +286,7 @@
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "indexes-client-delete",
@@ -301,7 +301,7 @@
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "datasets-types",
