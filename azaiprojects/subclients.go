@@ -1,6 +1,7 @@
 package azaiprojects
 
 import (
+	"github.com/sambo/ai-projects-go/azaiprojects/agents"
 	"github.com/sambo/ai-projects-go/azaiprojects/connections"
 	"github.com/sambo/ai-projects-go/azaiprojects/datasets"
 	"github.com/sambo/ai-projects-go/azaiprojects/deployments"
@@ -29,4 +30,9 @@ func (c *Client) Indexes() *indexes.Client {
 // Datasets returns the Datasets operation group.
 func (c *Client) Datasets() *datasets.Client {
 	return datasets.NewClientFromPipeline(c.endpoint, c.apiVersion, c.pl)
+}
+
+// Agents returns the Agents operation group.
+func (c *Client) Agents() *agents.Client {
+	return agents.NewClientFromPipeline(c.endpoint, c.apiVersion, c.pl)
 }

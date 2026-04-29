@@ -20,4 +20,7 @@ func TestSubClientAccessors(t *testing.T) {
 	if c.Datasets() == nil || c.Datasets().Endpoint() != "https://example.test" {
 		t.Errorf("Datasets() endpoint = %q", c.Datasets().Endpoint())
 	}
+	if c.Agents() == nil || c.Agents().Endpoint() != "https://example.test" {
+		t.Errorf("Agents() endpoint = %q", c.Agents().Endpoint())
+	}
 }
