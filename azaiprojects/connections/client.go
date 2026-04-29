@@ -87,6 +87,9 @@ func (c *Client) newGetRequest(ctx context.Context, path string) (*policy.Reques
 	return req, nil
 }
 
+// GetWithCredentialsOptions is the optional parameter set for GetWithCredentials.
+type GetWithCredentialsOptions struct{}
+
 // GetOptions is the optional parameter set for Get.
 type GetOptions struct{}
 
@@ -116,6 +119,36 @@ func (c *Client) Get(ctx context.Context, name string, _ *GetOptions) (GetRespon
 	var out GetResponse
 	if err := runtime.UnmarshalAsJSON(resp, &out.Connection); err != nil {
 		return GetResponse{}, err
+	}
+	return out, nil
+}
+
+// GetWithCredentialsResponse wraps a single Connection populated with credentials.
+type GetWithCredentialsResponse struct {
+	Connection
+}
+
+// GetWithCredentials retrieves a single connection by name, including credentials.
+//
+// Mirrors GET /connections/{name}/getConnectionWithCredentials?api-version=v1.
+func (c *Client) GetWithCredentials(ctx context.Context, name string, _ *GetWithCredentialsOptions) (GetWithCredentialsResponse, error) {
+	if name == "" {
+		return GetWithCredentialsResponse{}, errors.New("connections.GetWithCredentials: name is required")
+	}
+	req, err := c.newGetRequest(ctx, "/connections/"+name+"/getConnectionWithCredentials")
+	if err != nil {
+		return GetWithCredentialsResponse{}, err
+	}
+	resp, err := c.pl.Do(req)
+	if err != nil {
+		return GetWithCredentialsResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return GetWithCredentialsResponse{}, runtime.NewResponseError(resp)
+	}
+	var out GetWithCredentialsResponse
+	if err := runtime.UnmarshalAsJSON(resp, &out.Connection); err != nil {
+		return GetWithCredentialsResponse{}, err
 	}
 	return out, nil
 }
