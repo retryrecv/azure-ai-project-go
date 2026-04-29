@@ -12,3 +12,6 @@
 
 # Local env
 .env
+
+# scratch notes (out of git)
+.scratch/
