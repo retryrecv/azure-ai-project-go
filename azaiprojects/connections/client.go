@@ -74,6 +74,52 @@ func NewClientFromPipeline(endpoint, apiVersion string, pl runtime.Pipeline) *Cl
 // Endpoint returns the configured service endpoint.
 func (c *Client) Endpoint() string { return c.endpoint }
 
+// newGetRequest builds a GET request to {endpoint}{path} with api-version
+// applied to the query string.
+func (c *Client) newGetRequest(ctx context.Context, path string) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint+path)
+	if err != nil {
+		return nil, err
+	}
+	q := req.Raw().URL.Query()
+	q.Set("api-version", c.apiVersion)
+	req.Raw().URL.RawQuery = q.Encode()
+	return req, nil
+}
+
+// GetOptions is the optional parameter set for Get.
+type GetOptions struct{}
+
+// GetResponse wraps a single Connection.
+type GetResponse struct {
+	Connection
+}
+
+// Get retrieves a single connection by name (without credentials).
+//
+// Mirrors GET /connections/{name}?api-version=v1.
+func (c *Client) Get(ctx context.Context, name string, _ *GetOptions) (GetResponse, error) {
+	if name == "" {
+		return GetResponse{}, errors.New("connections.Get: name is required")
+	}
+	req, err := c.newGetRequest(ctx, "/connections/"+name)
+	if err != nil {
+		return GetResponse{}, err
+	}
+	resp, err := c.pl.Do(req)
+	if err != nil {
+		return GetResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return GetResponse{}, runtime.NewResponseError(resp)
+	}
+	var out GetResponse
+	if err := runtime.UnmarshalAsJSON(resp, &out.Connection); err != nil {
+		return GetResponse{}, err
+	}
+	return out, nil
+}
+
 // ListOptions is the optional parameter set for NewListPager.
 type ListOptions struct {
 	// ConnectionType filters the list by connection category.
