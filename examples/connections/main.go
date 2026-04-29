@@ -46,11 +46,11 @@ func main() {
 		if err != nil {
 			log.Fatalf("list page: %v", err)
 		}
+		if first.Name == "" && len(page.Value) > 0 {
+			first = page.Value[0]
+		}
 		for _, c := range page.Value {
 			names = append(names, c.Name)
-			if first.Name == "" {
-				first = c
-			}
 		}
 	}
 	fmt.Printf("Retrieved connections: %v\n", names)
@@ -73,7 +73,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("get with credentials: %v", err)
 	}
-	fmt.Printf("credentials.type: %s\n", withCreds.Credentials.Type)
+	fmt.Printf("credentials.type: %s \n", withCreds.Credentials.Type)
 
 	// List only AzureOpenAI default connections.
 	defaultPager := conns.NewListPager(&connections.ListOptions{

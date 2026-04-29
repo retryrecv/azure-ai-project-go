@@ -34,32 +34,18 @@ func main() {
 	ds := project.Datasets()
 	ctx := context.Background()
 
-	const name = "sample-dataset-basic"
+	const name = "sample-dataset-folder"
 	const version = "1.0"
+	const folderPath = "examples/datasets/sample_folder"
 
-	// Start a pending upload to get blob credentials.
-	upload, err := ds.PendingUpload(ctx, name, version, datasets.PendingUploadRequest{
-		ConnectionName:    connectionName,
-		PendingUploadType: datasets.PendingUploadTypeBlobReference,
-	}, nil)
+	created, err := ds.UploadFolder(ctx, name, version, folderPath, &datasets.UploadOptions{
+		ConnectionName: connectionName,
+	})
 	if err != nil {
-		log.Fatalf("pendingUpload: %v", err)
+		log.Fatalf("uploadFolder: %v", err)
 	}
-	fmt.Printf("PendingUpload SAS: %s\n", upload.BlobReference.Credential.SASURI)
-
-	// Create a dataset version pointing at the uploaded blob.
-	created, err := ds.CreateOrUpdate(ctx, name, version, datasets.FileDatasetVersion{
-		DatasetVersion: datasets.DatasetVersion{
-			Name:    name,
-			Version: version,
-			Type:    datasets.DatasetTypeURIFile,
-			DataURI: upload.BlobReference.BlobURI,
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("createOrUpdate: %v", err)
-	}
-	fmt.Printf("Created dataset: name=%s version=%s\n", created.Name, created.Version)
+	fmt.Printf("Uploaded folder; created dataset: name=%s version=%s type=%s\n",
+		created.Name, created.Version, created.Type)
 
 	cred2, err := ds.GetCredentials(ctx, name, version, nil)
 	if err != nil {
