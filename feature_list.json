@@ -22,7 +22,9 @@
     "priority": 2,
     "category": "infrastructure",
     "description": "Empty azaiprojects package with doc.go and version constant compiles cleanly",
-    "depends_on": ["go-module-init"],
+    "depends_on": [
+      "go-module-init"
+    ],
     "steps": [
       "Create azaiprojects/doc.go with package comment 'Package azaiprojects is a Go port of @azure/ai-projects.'",
       "Create azaiprojects/version.go with const ModuleVersion = \"0.1.0\" and const ModuleName = \"azaiprojects\"",
@@ -38,7 +40,9 @@
     "priority": 3,
     "category": "infrastructure",
     "description": "azaiprojects.ClientOptions exists, embeds azcore policy.ClientOptions, and exposes APIVersion with default \"v1\"",
-    "depends_on": ["package-skeleton-builds"],
+    "depends_on": [
+      "package-skeleton-builds"
+    ],
     "steps": [
       "Create azaiprojects/options.go declaring type ClientOptions struct embedding azcore.ClientOptions, with field APIVersion string",
       "Declare const APIVersionV1 = \"v1\" in same file",
@@ -53,10 +57,12 @@
     "priority": 4,
     "category": "functional",
     "description": "azaiprojects.NewClient(endpoint, cred, opts) returns a client with stored endpoint, default api-version v1, and azcore pipeline using scope https://ai.azure.com/.default",
-    "depends_on": ["client-options-and-api-version"],
+    "depends_on": [
+      "client-options-and-api-version"
+    ],
     "steps": [
       "Create azaiprojects/client.go with type Client struct holding endpoint string, apiVersion string, pl runtime.Pipeline",
-      "Implement func NewClient(endpoint string, cred azcore.TokenCredential, opts *ClientOptions) (*Client, error) — defaulting opts to &ClientOptions{}, defaulting APIVersion to APIVersionV1, building pipeline with runtime.NewPipeline(ModuleName, ModuleVersion, runtime.PipelineOptions{}, &opts.ClientOptions) and a bearer-token policy with scope https://ai.azure.com/.default",
+      "Implement func NewClient(endpoint string, cred azcore.TokenCredential, opts *ClientOptions) (*Client, error) \u2014 defaulting opts to &ClientOptions{}, defaulting APIVersion to APIVersionV1, building pipeline with runtime.NewPipeline(ModuleName, ModuleVersion, runtime.PipelineOptions{}, &opts.ClientOptions) and a bearer-token policy with scope https://ai.azure.com/.default",
       "Add Endpoint() string and APIVersion() string accessors",
       "Add azaiprojects/client_test.go using a fake azcore.TokenCredential to call NewClient with endpoint 'https://example.test' and assert: client.Endpoint() == 'https://example.test', client.APIVersion() == 'v1'",
       "Run: go test ./azaiprojects/...",
@@ -69,7 +75,9 @@
     "priority": 5,
     "category": "infrastructure",
     "description": "internal/shared package exposes a generic newPager helper wrapping runtime.Pager for {value:[],nextLink:string} responses",
-    "depends_on": ["aiproject-client-constructor"],
+    "depends_on": [
+      "aiproject-client-constructor"
+    ],
     "steps": [
       "Create azaiprojects/internal/shared/paging.go declaring type PageResponse[T any] struct { Value []T `json:\"value\"`; NextLink *string `json:\"nextLink,omitempty\"` }",
       "Add a unit test azaiprojects/internal/shared/paging_test.go that unmarshals a JSON literal {\"value\":[1,2,3],\"nextLink\":\"x\"} into PageResponse[int] and asserts Value==[1,2,3] and *NextLink==\"x\"",
@@ -83,11 +91,13 @@
     "priority": 6,
     "category": "functional",
     "description": "azaiprojects/connections package defines Connection struct and ConnectionType + CredentialType constants matching TS models",
-    "depends_on": ["internal-paging-helper"],
+    "depends_on": [
+      "internal-paging-helper"
+    ],
     "steps": [
       "Create azaiprojects/connections/models.go with type Connection struct { Name, ID, Type, Target string; IsDefault bool; Credentials BaseCredentials; Metadata map[string]string }",
       "Define type ConnectionType string with constants ConnectionTypeAzureOpenAI=\"AzureOpenAI\", ConnectionTypeAzureBlob=\"AzureBlob\", ConnectionTypeAzureAISearch=\"CognitiveSearch\", ConnectionTypeCustomKeys=\"CustomKeys\" (cross-check src/models/models.ts to confirm string values)",
-      "Define type BaseCredentials struct { Type string; APIKey, SASToken string } (catch-all for ApiKeyCredentials/EntraIDCredentials/SASTokenCredentials/NoAuth/CustomCredential — full union split lands in a later task)",
+      "Define type BaseCredentials struct { Type string; APIKey, SASToken string } (catch-all for ApiKeyCredentials/EntraIDCredentials/SASTokenCredentials/NoAuth/CustomCredential \u2014 full union split lands in a later task)",
       "Add azaiprojects/connections/models_test.go that round-trips a Connection JSON value with type:\"AzureOpenAI\" and asserts ConnectionType == ConnectionTypeAzureOpenAI",
       "Run: go test ./azaiprojects/connections/...",
       "Verify all tests pass"
@@ -99,10 +109,12 @@
     "priority": 7,
     "category": "functional",
     "description": "ConnectionsClient.NewListPager returns paged Connections from GET /connections?api-version=v1",
-    "depends_on": ["connections-types"],
+    "depends_on": [
+      "connections-types"
+    ],
     "steps": [
       "Create azaiprojects/connections/client.go with type Client struct holding endpoint, apiVersion, pl runtime.Pipeline",
-      "Add constructor func NewClient(parent *azaiprojects.Client) *Client (use an internal accessor to expose pipeline+endpoint+apiVersion to subpackages — add azaiprojects.Client.Internal() returning a struct with these fields)",
+      "Add constructor func NewClient(parent *azaiprojects.Client) *Client (use an internal accessor to expose pipeline+endpoint+apiVersion to subpackages \u2014 add azaiprojects.Client.Internal() returning a struct with these fields)",
       "Implement NewListPager(opts *ListOptions) *runtime.Pager[ListResponse] where ListOptions has ConnectionType *ConnectionType and DefaultConnection *bool, ListResponse wraps shared.PageResponse[Connection]",
       "Wire the pager to GET {endpoint}/connections with query params api-version, connectionType, defaultConnection",
       "Add azaiprojects/connections/client_list_test.go using a fake policy.Transporter that asserts: method == GET, path == /connections, query has api-version=v1, returns a fixture body {\"value\":[{\"name\":\"c1\",\"type\":\"AzureOpenAI\"}]}",
@@ -117,7 +129,9 @@
     "priority": 8,
     "category": "edge-case",
     "description": "ConnectionsClient.NewListPager appends connectionType and defaultConnection query params when set",
-    "depends_on": ["connections-client-list"],
+    "depends_on": [
+      "connections-client-list"
+    ],
     "steps": [
       "Add a unit test that calls NewListPager with ListOptions{ConnectionType: ptr(ConnectionTypeAzureOpenAI), DefaultConnection: ptr(true)}",
       "Assert outgoing request URL query has api-version=v1, connectionType=AzureOpenAI, defaultConnection=true",
@@ -131,7 +145,9 @@
     "priority": 9,
     "category": "functional",
     "description": "ConnectionsClient.Get(ctx, name) issues GET /connections/{name}?api-version=v1 and returns a Connection",
-    "depends_on": ["connections-client-list"],
+    "depends_on": [
+      "connections-client-list"
+    ],
     "steps": [
       "Implement Get(ctx, name string, opts *GetOptions) (GetResponse, error) where GetResponse wraps Connection",
       "Add a test using fake transporter: call Get(ctx, \"c1\"), assert request method GET, path /connections/c1, query api-version=v1, returns body {\"name\":\"c1\",\"type\":\"AzureOpenAI\"}",
@@ -146,7 +162,9 @@
     "priority": 10,
     "category": "functional",
     "description": "ConnectionsClient.GetWithCredentials issues GET /connections/{name}/getConnectionWithCredentials?api-version=v1",
-    "depends_on": ["connections-client-get"],
+    "depends_on": [
+      "connections-client-get"
+    ],
     "steps": [
       "Implement GetWithCredentials(ctx, name string, opts *GetWithCredentialsOptions) (GetWithCredentialsResponse, error)",
       "Add a test asserting request path is /connections/c1/getConnectionWithCredentials and method GET",
@@ -161,7 +179,9 @@
     "priority": 11,
     "category": "functional",
     "description": "ConnectionsClient.GetDefault(ctx, connectionType, opts) lists connections with defaultConnection=true filter and returns the first match",
-    "depends_on": ["connections-client-list-filters"],
+    "depends_on": [
+      "connections-client-list-filters"
+    ],
     "steps": [
       "Implement GetDefault(ctx context.Context, connectionType ConnectionType, opts *GetDefaultOptions) (GetDefaultResponse, error) where GetDefaultOptions has IncludeCredentials bool",
       "Behavior must match TS samples-dev/connections/connectionsBasics.ts: list with connectionType + defaultConnection=true, then return the first; if IncludeCredentials, follow up with GetWithCredentials on that name",
@@ -177,7 +197,9 @@
     "priority": 12,
     "category": "functional",
     "description": "azaiprojects/deployments package defines Deployment + ModelDeployment types matching TS DeploymentUnion",
-    "depends_on": ["internal-paging-helper"],
+    "depends_on": [
+      "internal-paging-helper"
+    ],
     "steps": [
       "Create azaiprojects/deployments/models.go with type Deployment struct { Name, Type string } and type ModelDeployment struct { Deployment; ModelName, ModelPublisher, ModelVersion string; Sku ModelDeploymentSku }",
       "Define type ModelDeploymentSku struct { Name string; Capacity int32; Family, Size, Tier string }",
@@ -192,11 +214,13 @@
     "priority": 13,
     "category": "functional",
     "description": "DeploymentsClient.NewListPager issues GET /deployments?api-version=v1 with optional modelPublisher/modelName/deploymentType filters",
-    "depends_on": ["deployments-types"],
+    "depends_on": [
+      "deployments-types"
+    ],
     "steps": [
       "Create azaiprojects/deployments/client.go with NewClient and NewListPager(opts *ListOptions) where ListOptions has ModelPublisher, ModelName *string and DeploymentType *string",
-      "Test 1: NewListPager(nil) — assert request path /deployments, query api-version=v1; fixture returns one ModelDeployment",
-      "Test 2: NewListPager(&ListOptions{ModelPublisher: ptr(\"openai\")}) — assert query has modelPublisher=openai",
+      "Test 1: NewListPager(nil) \u2014 assert request path /deployments, query api-version=v1; fixture returns one ModelDeployment",
+      "Test 2: NewListPager(&ListOptions{ModelPublisher: ptr(\"openai\")}) \u2014 assert query has modelPublisher=openai",
       "Run: go test ./azaiprojects/deployments/...",
       "Verify all tests pass"
     ],
@@ -207,10 +231,12 @@
     "priority": 14,
     "category": "functional",
     "description": "DeploymentsClient.Get(ctx, name) issues GET /deployments/{name}?api-version=v1",
-    "depends_on": ["deployments-client-list"],
+    "depends_on": [
+      "deployments-client-list"
+    ],
     "steps": [
       "Implement Get(ctx, name string, opts *GetOptions) (GetResponse, error)",
-      "Test: Get(ctx, \"my-gpt4o\") — assert path /deployments/my-gpt4o, method GET, returned ModelDeployment.Name == \"my-gpt4o\"",
+      "Test: Get(ctx, \"my-gpt4o\") \u2014 assert path /deployments/my-gpt4o, method GET, returned ModelDeployment.Name == \"my-gpt4o\"",
       "Run: go test ./azaiprojects/deployments/...",
       "Verify all tests pass"
     ],
@@ -221,10 +247,12 @@
     "priority": 15,
     "category": "functional",
     "description": "azaiprojects/indexes package defines Index, AzureAISearchIndex, ManagedAzureAISearchIndex, CosmosDBIndex types matching TS IndexUnion",
-    "depends_on": ["internal-paging-helper"],
+    "depends_on": [
+      "internal-paging-helper"
+    ],
     "steps": [
       "Create azaiprojects/indexes/models.go with type Index struct { Name, Version, Type string } and concrete types AzureAISearchIndex { Index; IndexName, ConnectionName string }, ManagedAzureAISearchIndex { Index; FieldMapping FieldMapping; ConnectionName string }, CosmosDBIndex { Index; ... }",
-      "Define IndexType string constants: IndexTypeAzureSearch=\"AzureSearch\", IndexTypeManagedAzureSearch=\"ManagedAzureSearch\", IndexTypeCosmosDB=\"CosmosDB\" — confirm exact strings against src/models/models.ts",
+      "Define IndexType string constants: IndexTypeAzureSearch=\"AzureSearch\", IndexTypeManagedAzureSearch=\"ManagedAzureSearch\", IndexTypeCosmosDB=\"CosmosDB\" \u2014 confirm exact strings against src/models/models.ts",
       "Add JSON round-trip test for AzureAISearchIndex with type=\"AzureSearch\"",
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
@@ -236,7 +264,9 @@
     "priority": 16,
     "category": "functional",
     "description": "IndexesClient.NewListPager issues GET /indexes?api-version=v1",
-    "depends_on": ["indexes-types"],
+    "depends_on": [
+      "indexes-types"
+    ],
     "steps": [
       "Create azaiprojects/indexes/client.go with NewClient and NewListPager(opts *ListOptions)",
       "Test: pager fires GET /indexes?api-version=v1, fixture returns one AzureAISearchIndex; pager yields one page with one element",
@@ -250,10 +280,12 @@
     "priority": 17,
     "category": "functional",
     "description": "IndexesClient.NewListVersionsPager(name) issues GET /indexes/{name}/versions?api-version=v1",
-    "depends_on": ["indexes-client-list"],
+    "depends_on": [
+      "indexes-client-list"
+    ],
     "steps": [
       "Implement NewListVersionsPager(name string, opts *ListVersionsOptions) *runtime.Pager[ListVersionsResponse]",
-      "Test: NewListVersionsPager(\"my-index\") — assert path /indexes/my-index/versions, query api-version=v1",
+      "Test: NewListVersionsPager(\"my-index\") \u2014 assert path /indexes/my-index/versions, query api-version=v1",
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
@@ -264,10 +296,12 @@
     "priority": 18,
     "category": "functional",
     "description": "IndexesClient.Get(ctx, name, version) issues GET /indexes/{name}/versions/{version}?api-version=v1",
-    "depends_on": ["indexes-client-list-versions"],
+    "depends_on": [
+      "indexes-client-list-versions"
+    ],
     "steps": [
       "Implement Get(ctx, name, version string, opts *GetOptions) (GetResponse, error)",
-      "Test: Get(ctx, \"my-index\", \"1.0\") — assert path /indexes/my-index/versions/1.0",
+      "Test: Get(ctx, \"my-index\", \"1.0\") \u2014 assert path /indexes/my-index/versions/1.0",
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
@@ -278,9 +312,11 @@
     "priority": 19,
     "category": "functional",
     "description": "IndexesClient.CreateOrUpdate(ctx, name, version, body) issues PATCH /indexes/{name}/versions/{version}?api-version=v1 with merge-patch+json body",
-    "depends_on": ["indexes-client-get"],
+    "depends_on": [
+      "indexes-client-get"
+    ],
     "steps": [
-      "Implement CreateOrUpdate(ctx, name, version string, index Index, opts *CreateOrUpdateOptions) (CreateOrUpdateResponse, error) — body is JSON-marshaled index, Content-Type 'application/merge-patch+json' (verify against src/api/indexes/operations.ts)",
+      "Implement CreateOrUpdate(ctx, name, version string, index Index, opts *CreateOrUpdateOptions) (CreateOrUpdateResponse, error) \u2014 body is JSON-marshaled index, Content-Type 'application/merge-patch+json' (verify against src/api/indexes/operations.ts)",
       "Test: pass AzureAISearchIndex{Name:\"x\",Version:\"1.0\",Type:\"AzureSearch\",IndexName:\"i\",ConnectionName:\"c\"}, assert request method PATCH, path /indexes/x/versions/1.0, request body parses to a JSON object containing type=AzureSearch and indexName=i",
       "Fixture response echoes the index back; assert returned Index.Type == \"AzureSearch\"",
       "Run: go test ./azaiprojects/indexes/...",
@@ -293,11 +329,13 @@
     "priority": 20,
     "category": "functional",
     "description": "IndexesClient.Delete(ctx, name, version) issues DELETE /indexes/{name}/versions/{version}?api-version=v1 and treats 204 as success",
-    "depends_on": ["indexes-client-create-or-update"],
+    "depends_on": [
+      "indexes-client-create-or-update"
+    ],
     "steps": [
       "Implement Delete(ctx, name, version string, opts *DeleteOptions) (DeleteResponse, error)",
-      "Test 1: 204 response — assert no error, request path /indexes/x/versions/1.0, method DELETE",
-      "Test 2: 404 response with body {\"error\":{\"code\":\"NotFound\",\"message\":\"...\"}} — assert error is *azcore.ResponseError with StatusCode 404",
+      "Test 1: 204 response \u2014 assert no error, request path /indexes/x/versions/1.0, method DELETE",
+      "Test 2: 404 response with body {\"error\":{\"code\":\"NotFound\",\"message\":\"...\"}} \u2014 assert error is *azcore.ResponseError with StatusCode 404",
       "Run: go test ./azaiprojects/indexes/...",
       "Verify all tests pass"
     ],
@@ -308,7 +346,9 @@
     "priority": 21,
     "category": "functional",
     "description": "azaiprojects/datasets package defines DatasetVersion, FileDatasetVersion, FolderDatasetVersion, PendingUploadRequest/Response, DatasetCredential types",
-    "depends_on": ["internal-paging-helper"],
+    "depends_on": [
+      "internal-paging-helper"
+    ],
     "steps": [
       "Create azaiprojects/datasets/models.go: DatasetVersion{Name,Version,Type,DataURI string}, FileDatasetVersion{DatasetVersion}, FolderDatasetVersion{DatasetVersion}",
       "Add PendingUploadRequest{PendingUploadName,ConnectionName string; PendingUploadType string}, PendingUploadResponse{PendingUploadName, ConnectionName string; PendingUploadType string; BlobReference BlobReference}, BlobReference{BlobURI, StorageAccountARMID string; Credential SasCredential}, SasCredential{Type, SASURI string}, DatasetCredential{BlobReference}",
@@ -324,7 +364,9 @@
     "priority": 22,
     "category": "functional",
     "description": "DatasetsClient.NewListPager and NewListVersionsPager fire GET /datasets and /datasets/{name}/versions",
-    "depends_on": ["datasets-types"],
+    "depends_on": [
+      "datasets-types"
+    ],
     "steps": [
       "Create azaiprojects/datasets/client.go with NewClient, NewListPager(opts), NewListVersionsPager(name, opts)",
       "Test 1: list pager fires GET /datasets?api-version=v1",
@@ -332,77 +374,87 @@
       "Run: go test ./azaiprojects/datasets/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "datasets-client-get",
     "priority": 23,
     "category": "functional",
     "description": "DatasetsClient.Get(ctx, name, version) issues GET /datasets/{name}/versions/{version}?api-version=v1",
-    "depends_on": ["datasets-client-list-and-list-versions"],
+    "depends_on": [
+      "datasets-client-list-and-list-versions"
+    ],
     "steps": [
       "Implement Get(ctx, name, version string, opts *GetOptions) (GetResponse, error)",
-      "Test: Get(ctx, \"d1\", \"1.0\") — assert path /datasets/d1/versions/1.0, method GET, returned DatasetVersion.Name == \"d1\"",
+      "Test: Get(ctx, \"d1\", \"1.0\") \u2014 assert path /datasets/d1/versions/1.0, method GET, returned DatasetVersion.Name == \"d1\"",
       "Run: go test ./azaiprojects/datasets/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "datasets-client-create-or-update",
     "priority": 24,
     "category": "functional",
     "description": "DatasetsClient.CreateOrUpdate(ctx, name, version, body) issues PATCH /datasets/{name}/versions/{version} with merge-patch+json",
-    "depends_on": ["datasets-client-get"],
+    "depends_on": [
+      "datasets-client-get"
+    ],
     "steps": [
       "Implement CreateOrUpdate(ctx, name, version string, ds DatasetVersion, opts *CreateOrUpdateOptions) (CreateOrUpdateResponse, error)",
       "Test: pass FileDatasetVersion{Name:\"d1\",Version:\"1.0\",Type:\"uri_file\",DataURI:\"https://x\"}, assert PATCH /datasets/d1/versions/1.0 with body containing type=uri_file",
       "Run: go test ./azaiprojects/datasets/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "datasets-client-delete",
     "priority": 25,
     "category": "functional",
     "description": "DatasetsClient.Delete(ctx, name, version) issues DELETE and treats 204 as success",
-    "depends_on": ["datasets-client-create-or-update"],
+    "depends_on": [
+      "datasets-client-create-or-update"
+    ],
     "steps": [
       "Implement Delete(ctx, name, version string, opts *DeleteOptions) (DeleteResponse, error)",
-      "Test: 204 response — no error, request path /datasets/d1/versions/1.0, method DELETE",
+      "Test: 204 response \u2014 no error, request path /datasets/d1/versions/1.0, method DELETE",
       "Run: go test ./azaiprojects/datasets/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "datasets-client-pending-upload",
     "priority": 26,
     "category": "functional",
     "description": "DatasetsClient.PendingUpload(ctx, name, version, req) issues POST /datasets/{name}/versions/{version}/startPendingUpload",
-    "depends_on": ["datasets-client-create-or-update"],
+    "depends_on": [
+      "datasets-client-create-or-update"
+    ],
     "steps": [
       "Implement PendingUpload(ctx, name, version string, req PendingUploadRequest, opts *PendingUploadOptions) (PendingUploadResponse, error)",
       "Test: POST /datasets/d1/versions/1.0/startPendingUpload with body {\"connectionName\":\"sc\",\"pendingUploadType\":\"BlobReference\"}; fixture returns BlobReference; assert response BlobReference.BlobURI parsed",
       "Run: go test ./azaiprojects/datasets/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "datasets-client-get-credentials",
     "priority": 27,
     "category": "functional",
     "description": "DatasetsClient.GetCredentials(ctx, name, version) issues POST /datasets/{name}/versions/{version}/credentials",
-    "depends_on": ["datasets-client-pending-upload"],
+    "depends_on": [
+      "datasets-client-pending-upload"
+    ],
     "steps": [
       "Implement GetCredentials(ctx, name, version string, opts *GetCredentialsOptions) (GetCredentialsResponse, error)",
       "Test: POST /datasets/d1/versions/1.0/credentials, fixture returns DatasetCredential with SASURI, assert parsed",
       "Run: go test ./azaiprojects/datasets/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "aiproject-client-subclient-accessors",
@@ -428,7 +480,9 @@
     "priority": 29,
     "category": "ui",
     "description": "examples/connections/main.go compiles and mirrors samples-dev/connections/connectionsBasics.ts",
-    "depends_on": ["aiproject-client-subclient-accessors"],
+    "depends_on": [
+      "aiproject-client-subclient-accessors"
+    ],
     "steps": [
       "Create examples/connections/main.go that: reads FOUNDRY_PROJECT_ENDPOINT, builds a Client with azidentity.NewDefaultAzureCredential, iterates Connections().NewListPager(nil), calls Get on the first, calls GetWithCredentials, calls GetDefault(ConnectionTypeAzureOpenAI, &GetDefaultOptions{IncludeCredentials: true})",
       "Run: go build ./examples/connections/...",
@@ -443,7 +497,9 @@
     "priority": 30,
     "category": "ui",
     "description": "examples/deployments/main.go compiles and mirrors samples-dev/deployments/deploymentsBasics.ts",
-    "depends_on": ["aiproject-client-subclient-accessors"],
+    "depends_on": [
+      "aiproject-client-subclient-accessors"
+    ],
     "steps": [
       "Create examples/deployments/main.go that lists deployments, filters by MODEL_PUBLISHER env, gets one by name",
       "Run: go build ./examples/deployments/...",
@@ -456,7 +512,9 @@
     "priority": 31,
     "category": "ui",
     "description": "examples/indexes/main.go compiles and mirrors samples-dev/indexes/indexesBasics.ts",
-    "depends_on": ["aiproject-client-subclient-accessors"],
+    "depends_on": [
+      "aiproject-client-subclient-accessors"
+    ],
     "steps": [
       "Create examples/indexes/main.go that calls CreateOrUpdate with an AzureAISearchIndex, Get, NewListVersionsPager, NewListPager, Delete",
       "Run: go build ./examples/indexes/...",
@@ -469,7 +527,9 @@
     "priority": 32,
     "category": "ui",
     "description": "examples/datasets/main.go compiles and mirrors samples-dev/datasets/datasetsBasics.ts (excluding uploadFile/uploadFolder helpers, which are tracked separately)",
-    "depends_on": ["aiproject-client-subclient-accessors"],
+    "depends_on": [
+      "aiproject-client-subclient-accessors"
+    ],
     "steps": [
       "Create examples/datasets/main.go that calls PendingUpload, CreateOrUpdate, GetCredentials, Get, NewListVersionsPager, NewListPager, Delete",
       "Run: go build ./examples/datasets/...",
