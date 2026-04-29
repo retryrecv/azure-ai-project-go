@@ -1343,26 +1343,26 @@
     "subTasks": [
       {
         "subject": "Create azaiprojects/beta/beta.go with type Operations struct holding all 9 sub-clients (Skills, Toolboxes, Schedules, RedTeams, MemoryStores, Insights, Evaluators, EvaluationTaxonomies, Agents)",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Add NewOperationsFromPipeline factory",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Add azaiprojects.Client.Beta() *beta.Operations to subclients.go",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Extend subclients_test.go with c.Beta() asserting non-nil and each sub-client endpoint matches",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Run: go test ./azaiprojects/... \u2014 all green",
-        "passes": false
+        "passes": true
       }
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "beta-full-smoke",
@@ -1375,22 +1375,22 @@
     "subTasks": [
       {
         "subject": "Run: bash init.sh",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Verify it prints 'smoke test ok'",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Run: go test ./... -count=1",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Verify exit code 0 and all packages report ok",
-        "passes": false
+        "passes": true
       }
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "full-smoke",

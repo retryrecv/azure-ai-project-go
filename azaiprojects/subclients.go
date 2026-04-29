@@ -2,6 +2,7 @@ package azaiprojects
 
 import (
 	"github.com/sambo/ai-projects-go/azaiprojects/agents"
+	"github.com/sambo/ai-projects-go/azaiprojects/beta"
 	"github.com/sambo/ai-projects-go/azaiprojects/connections"
 	"github.com/sambo/ai-projects-go/azaiprojects/datasets"
 	"github.com/sambo/ai-projects-go/azaiprojects/deployments"
@@ -41,4 +42,13 @@ func (c *Client) Agents() *agents.Client {
 // EvaluationRules returns the EvaluationRules operation group.
 func (c *Client) EvaluationRules() *evaluationrules.Client {
 	return evaluationrules.NewClientFromPipeline(c.endpoint, c.apiVersion, c.pl)
+}
+
+// Beta returns the beta.* operation group container.
+//
+// Use the returned *beta.Operations to access beta sub-clients
+// (Skills, Toolboxes, Schedules, RedTeams, MemoryStores, Insights,
+// Evaluators, EvaluationTaxonomies, Agents).
+func (c *Client) Beta() *beta.Operations {
+	return beta.New(c.endpoint, c.apiVersion, c.pl)
 }
