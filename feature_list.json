@@ -1271,26 +1271,26 @@
     "subTasks": [
       {
         "subject": "Survey TS src/api/beta/evaluationTaxonomies/operations.ts; note EvaluationTaxonomy shape",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create models.go (EvaluationTaxonomy; nested classification rules as json.RawMessage)",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create client.go and implement List (with inputName/inputType filters), Get, Create (POST), Update (PATCH), Delete",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Unit tests",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Run: go test ./azaiprojects/beta/evaluationtaxonomies/... \u2014 all green",
-        "passes": false
+        "passes": true
       }
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "beta-agents",
