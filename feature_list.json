@@ -1303,34 +1303,34 @@
     "subTasks": [
       {
         "subject": "Survey TS src/api/beta/agents/operations.ts; note Session, SessionFile, VersionIndicatorUnion shapes",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create models.go (Session, SessionFile; VersionIndicatorUnion as json.RawMessage; PatchAgent body)",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create client.go with combined HostedAgents+AgentEndpoints foundry-features header",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Implement PatchAgent (PATCH /agents/{name}), CreateSession (POST), GetSession, DeleteSession, ListSessions (cursor)",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Implement UploadSessionFile (binary in), DownloadSessionFile (binary stream out), ListSessionFiles, DeleteSessionFile",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Unit tests",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Run: go test ./azaiprojects/beta/agents/... \u2014 all green",
-        "passes": false
+        "passes": true
       }
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "beta-container-and-accessor",
