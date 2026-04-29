@@ -1,0 +1,11 @@
+Session 1 — Initializer
+
+Scaffolded project per ~/.claude/bg-tasks/long-run-task.md.
+- CLAUDE.md describing layout, startup sequence, end-of-session rules.
+- feature_list.json with decomposed core-surface tasks (priority order: infra → connections → deployments → indexes → datasets, with examples last).
+- init.sh smoke-tests with `go build`, `go vet`, `go test` once go.mod exists.
+- No feature code written. Awaiting "resume long run" to begin task 1.
+
+Reference SDK: /Users/goubo/projects/azure-sdk-for-js/sdk/ai/ai-projects
+TS public API: src/index.ts exports
+Samples: samples-dev/<group>/<name>Basics.ts

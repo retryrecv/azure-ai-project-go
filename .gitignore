@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Go build output
+/bin/
+/dist/
+*.test
+*.out
+
+# Local env
+.env
