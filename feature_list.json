@@ -200,7 +200,7 @@
       "Run: go test ./azaiprojects/deployments/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "deployments-client-get",
@@ -214,7 +214,7 @@
       "Run: go test ./azaiprojects/deployments/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "indexes-types",
