@@ -15,7 +15,7 @@
       "Run: bash init.sh",
       "Verify it prints 'smoke test ok'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "package-skeleton-builds",

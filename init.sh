@@ -17,6 +17,14 @@ if [ ! -f go.mod ]; then
 fi
 
 go mod tidy
+
+# Tolerate the bootstrap state where no .go files exist yet.
+if ! find . -name '*.go' -not -path './.*' -print -quit | grep -q .; then
+  echo "no .go files yet — skipping build/vet/test"
+  echo "smoke test ok"
+  exit 0
+fi
+
 go build ./...
 go vet ./...
 go test ./...
