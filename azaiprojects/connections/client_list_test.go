@@ -86,3 +86,29 @@ func TestNewListPager_FiresGetWithAPIVersion(t *testing.T) {
 		t.Errorf("page.Value[0].Type = %q, want %q", page.Value[0].Type, ConnectionTypeAzureOpenAI)
 	}
 }
+
+func ptr[T any](v T) *T { return &v }
+
+func TestNewListPager_AppliesConnectionTypeAndDefaultFilters(t *testing.T) {
+	ft := &fakeTransport{body: `{"value":[]}`}
+	c := newTestClient(t, ft)
+
+	pager := c.NewListPager(&ListOptions{
+		ConnectionType:    ptr(ConnectionTypeAzureOpenAI),
+		DefaultConnection: ptr(true),
+	})
+	if _, err := pager.NextPage(context.Background()); err != nil {
+		t.Fatalf("NextPage: %v", err)
+	}
+
+	q := ft.gotReq.URL.Query()
+	if got, want := q.Get("api-version"), "v1"; got != want {
+		t.Errorf("api-version = %s, want %s", got, want)
+	}
+	if got, want := q.Get("connectionType"), "AzureOpenAI"; got != want {
+		t.Errorf("connectionType = %s, want %s", got, want)
+	}
+	if got, want := q.Get("defaultConnection"), "true"; got != want {
+		t.Errorf("defaultConnection = %s, want %s", got, want)
+	}
+}
