@@ -997,6 +997,182 @@
     "passes": true
   },
   {
+    "id": "beta-skills",
+    "priority": 100,
+    "category": "functional",
+    "description": "azaiprojects/beta/skills package: 7 ops (Create, Get, List, Update, Delete, Download, CreateFromPackage). foundry-features: Skills=V1Preview; cursor pagination",
+    "depends_on": ["full-smoke"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/skills/operations.ts and models.ts; note path templates and request/response shapes", "passes": false},
+      {"subject": "Create azaiprojects/beta/skills package with models.go (SkillObject + supporting types as top-level fields, deeply-nested unions as json.RawMessage)", "passes": false},
+      {"subject": "Create client.go with NewClient/NewClientFromPipeline mirroring evaluationrules pattern; include foundry-features header injection", "passes": false},
+      {"subject": "Implement Create (POST /skills) and Get (GET /skills/{name})", "passes": false},
+      {"subject": "Implement List with cursor pagination (limit/order/after/before)", "passes": false},
+      {"subject": "Implement Update and Delete", "passes": false},
+      {"subject": "Implement Download (binary stream out) and CreateFromPackage (POST /skills:import binary in)", "passes": false},
+      {"subject": "Add unit tests using scriptedTransport for each op (path, method, headers, body shape)", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/skills/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-toolboxes",
+    "priority": 101,
+    "category": "functional",
+    "description": "azaiprojects/beta/toolboxes package: 8 ops (List, Get, Update, Delete, ListVersions, GetVersion, CreateVersion, DeleteVersion). foundry-features: Toolboxes=V1Preview; cursor pagination",
+    "depends_on": ["beta-skills"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/toolboxes/operations.ts; note ToolboxObject + ToolUnion fields", "passes": false},
+      {"subject": "Create azaiprojects/beta/toolboxes/models.go (ToolboxObject; ToolUnion as json.RawMessage)", "passes": false},
+      {"subject": "Create client.go with foundry-features header", "passes": false},
+      {"subject": "Implement List, Get, Update (PATCH defaultVersion), Delete", "passes": false},
+      {"subject": "Implement ListVersions, GetVersion, CreateVersion, DeleteVersion", "passes": false},
+      {"subject": "Add unit tests for each op", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/toolboxes/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-schedules",
+    "priority": 102,
+    "category": "functional",
+    "description": "azaiprojects/beta/schedules package: 6 ops (List, Get, CreateOrUpdate, Delete, ListRuns, GetRun). foundry-features: Schedules=V1Preview",
+    "depends_on": ["beta-toolboxes"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/schedules/operations.ts; note Schedule, ScheduleAction union, ScheduleRun shapes", "passes": false},
+      {"subject": "Create models.go with Schedule, ScheduleRun, action union as json.RawMessage", "passes": false},
+      {"subject": "Create client.go", "passes": false},
+      {"subject": "Implement List (with type, enabled filters), Get, CreateOrUpdate (PUT), Delete", "passes": false},
+      {"subject": "Implement ListRuns and GetRun", "passes": false},
+      {"subject": "Unit tests for each op", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/schedules/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-redteams",
+    "priority": 103,
+    "category": "functional",
+    "description": "azaiprojects/beta/redteams package: 3 ops (Create, List, Get). foundry-features: RedTeams=V1Preview",
+    "depends_on": ["beta-schedules"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/redTeams/operations.ts; note RedTeam shape", "passes": false},
+      {"subject": "Create models.go (RedTeam, AttackStrategy / RiskCategory unions as json.RawMessage)", "passes": false},
+      {"subject": "Create client.go and implement Create (POST /redTeams/runs:run), List, Get", "passes": false},
+      {"subject": "Unit tests", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/redteams/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-memorystores",
+    "priority": 104,
+    "category": "functional",
+    "description": "azaiprojects/beta/memorystores package: 9 ops (Create, Get, List, Update, Delete, UpdateMemories, SearchMemories, GetUpdateResult, DeleteScope). foundry-features: MemoryStores=V1Preview",
+    "depends_on": ["beta-redteams"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/memoryStores/operations.ts; note MemoryStore, MemoryStoreDefinitionUnion, search/update result shapes", "passes": false},
+      {"subject": "Create models.go (MemoryStore + Definition union dispatcher as json.RawMessage; SearchResult, UpdateResult)", "passes": false},
+      {"subject": "Create client.go", "passes": false},
+      {"subject": "Implement Create, Get, List (cursor), Update, Delete", "passes": false},
+      {"subject": "Implement UpdateMemories (POST :update_memories), SearchMemories (POST :search_memories), DeleteScope (POST :delete_scope), GetUpdateResult (GET /updates/{id})", "passes": false},
+      {"subject": "Unit tests", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/memorystores/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-insights",
+    "priority": 105,
+    "category": "functional",
+    "description": "azaiprojects/beta/insights package: 3 ops (List, Get, Generate). foundry-features: Insights=V1Preview",
+    "depends_on": ["beta-memorystores"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/insights/operations.ts; note Insight shape and filters", "passes": false},
+      {"subject": "Create models.go (Insight; nested coordinates/data as json.RawMessage)", "passes": false},
+      {"subject": "Create client.go and implement List (with type/evalId/runId/agentName/includeCoordinates), Get, Generate (POST)", "passes": false},
+      {"subject": "Unit tests", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/insights/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-evaluators",
+    "priority": 106,
+    "category": "functional",
+    "description": "azaiprojects/beta/evaluators package: 6 ops (List, ListVersions, GetVersion, CreateVersion, UpdateVersion, DeleteVersion). foundry-features: Evaluations=V1Preview",
+    "depends_on": ["beta-insights"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/evaluators/operations.ts; note EvaluatorVersion shape", "passes": false},
+      {"subject": "Create models.go (Evaluator, EvaluatorVersion; nested rule/criteria as json.RawMessage)", "passes": false},
+      {"subject": "Create client.go and implement List, ListVersions, GetVersion, CreateVersion (POST), UpdateVersion (PATCH), DeleteVersion", "passes": false},
+      {"subject": "Unit tests", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/evaluators/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-evaluationtaxonomies",
+    "priority": 107,
+    "category": "functional",
+    "description": "azaiprojects/beta/evaluationtaxonomies package: 5 ops (List, Get, Create, Update, Delete). foundry-features: Evaluations=V1Preview",
+    "depends_on": ["beta-evaluators"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/evaluationTaxonomies/operations.ts; note EvaluationTaxonomy shape", "passes": false},
+      {"subject": "Create models.go (EvaluationTaxonomy; nested classification rules as json.RawMessage)", "passes": false},
+      {"subject": "Create client.go and implement List (with inputName/inputType filters), Get, Create (POST), Update (PATCH), Delete", "passes": false},
+      {"subject": "Unit tests", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/evaluationtaxonomies/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-agents",
+    "priority": 108,
+    "category": "functional",
+    "description": "azaiprojects/beta/agents package: 9 ops (PatchAgent, CreateSession, GetSession, DeleteSession, ListSessions, UploadSessionFile, DownloadSessionFile, ListSessionFiles, DeleteSessionFile). foundry-features: HostedAgents=V1Preview,AgentEndpoints=V1Preview",
+    "depends_on": ["beta-evaluationtaxonomies"],
+    "subTasks": [
+      {"subject": "Survey TS src/api/beta/agents/operations.ts; note Session, SessionFile, VersionIndicatorUnion shapes", "passes": false},
+      {"subject": "Create models.go (Session, SessionFile; VersionIndicatorUnion as json.RawMessage; PatchAgent body)", "passes": false},
+      {"subject": "Create client.go with combined HostedAgents+AgentEndpoints foundry-features header", "passes": false},
+      {"subject": "Implement PatchAgent (PATCH /agents/{name}), CreateSession (POST), GetSession, DeleteSession, ListSessions (cursor)", "passes": false},
+      {"subject": "Implement UploadSessionFile (binary in), DownloadSessionFile (binary stream out), ListSessionFiles, DeleteSessionFile", "passes": false},
+      {"subject": "Unit tests", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/beta/agents/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-container-and-accessor",
+    "priority": 109,
+    "category": "functional",
+    "description": "azaiprojects/beta package exposes BetaOperations container and azaiprojects.Client.Beta() accessor returns it",
+    "depends_on": ["beta-agents"],
+    "subTasks": [
+      {"subject": "Create azaiprojects/beta/beta.go with type Operations struct holding all 9 sub-clients (Skills, Toolboxes, Schedules, RedTeams, MemoryStores, Insights, Evaluators, EvaluationTaxonomies, Agents)", "passes": false},
+      {"subject": "Add NewOperationsFromPipeline factory", "passes": false},
+      {"subject": "Add azaiprojects.Client.Beta() *beta.Operations to subclients.go", "passes": false},
+      {"subject": "Extend subclients_test.go with c.Beta() asserting non-nil and each sub-client endpoint matches", "passes": false},
+      {"subject": "Run: go test ./azaiprojects/... — all green", "passes": false}
+    ],
+    "passes": false
+  },
+  {
+    "id": "beta-full-smoke",
+    "priority": 110,
+    "category": "infrastructure",
+    "description": "Full module build, vet, and tests pass cleanly with all beta sub-groups in place",
+    "depends_on": ["beta-container-and-accessor"],
+    "subTasks": [
+      {"subject": "Run: bash init.sh", "passes": false},
+      {"subject": "Verify it prints 'smoke test ok'", "passes": false},
+      {"subject": "Run: go test ./... -count=1", "passes": false},
+      {"subject": "Verify exit code 0 and all packages report ok", "passes": false}
+    ],
+    "passes": false
+  },
+  {
     "id": "full-smoke",
     "priority": 33,
     "category": "infrastructure",
