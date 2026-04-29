@@ -170,7 +170,7 @@
       "Run: go test ./azaiprojects/connections/...",
       "Verify all tests pass"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "deployments-types",

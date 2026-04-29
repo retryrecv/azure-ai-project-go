@@ -90,6 +90,55 @@ func (c *Client) newGetRequest(ctx context.Context, path string) (*policy.Reques
 // GetWithCredentialsOptions is the optional parameter set for GetWithCredentials.
 type GetWithCredentialsOptions struct{}
 
+// GetDefaultOptions is the optional parameter set for GetDefault.
+type GetDefaultOptions struct {
+	// IncludeCredentials, when true, follows up the list call with a
+	// GetWithCredentials on the returned connection. Mirrors the TypeScript
+	// sample at samples-dev/connections/connectionsBasics.ts.
+	IncludeCredentials bool
+}
+
+// GetDefaultResponse wraps the default Connection for a type.
+type GetDefaultResponse struct {
+	Connection
+}
+
+// GetDefault returns the default Connection of a given type.
+//
+// Implementation matches @azure/ai-projects: list connections filtered to
+// the requested type with defaultConnection=true, return the first hit.
+// When opts.IncludeCredentials is true, a follow-up GetWithCredentials
+// call populates the credentials.
+func (c *Client) GetDefault(ctx context.Context, connectionType ConnectionType, opts *GetDefaultOptions) (GetDefaultResponse, error) {
+	if connectionType == "" {
+		return GetDefaultResponse{}, errors.New("connections.GetDefault: connectionType is required")
+	}
+	defaultTrue := true
+	pager := c.NewListPager(&ListOptions{
+		ConnectionType:    &connectionType,
+		DefaultConnection: &defaultTrue,
+	})
+	if !pager.More() {
+		return GetDefaultResponse{}, errors.New("connections.GetDefault: pager has no pages")
+	}
+	page, err := pager.NextPage(ctx)
+	if err != nil {
+		return GetDefaultResponse{}, err
+	}
+	if len(page.Value) == 0 {
+		return GetDefaultResponse{}, fmt.Errorf("connections.GetDefault: no default connection of type %q", connectionType)
+	}
+	first := page.Value[0]
+	if opts != nil && opts.IncludeCredentials {
+		withCreds, err := c.GetWithCredentials(ctx, first.Name, nil)
+		if err != nil {
+			return GetDefaultResponse{}, err
+		}
+		return GetDefaultResponse{Connection: withCreds.Connection}, nil
+	}
+	return GetDefaultResponse{Connection: first}, nil
+}
+
 // GetOptions is the optional parameter set for Get.
 type GetOptions struct{}
 
