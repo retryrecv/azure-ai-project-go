@@ -8,12 +8,15 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/joho/godotenv"
 
 	"github.com/sambo/ai-projects-go/azaiprojects"
 	"github.com/sambo/ai-projects-go/azaiprojects/datasets"
 )
 
 func main() {
+	_ = godotenv.Load()
+
 	endpoint := os.Getenv("FOUNDRY_PROJECT_ENDPOINT")
 	if endpoint == "" {
 		log.Fatal("FOUNDRY_PROJECT_ENDPOINT is required")

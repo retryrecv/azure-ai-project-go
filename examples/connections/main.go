@@ -11,12 +11,17 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/joho/godotenv"
 
 	"github.com/sambo/ai-projects-go/azaiprojects"
 	"github.com/sambo/ai-projects-go/azaiprojects/connections"
 )
 
 func main() {
+	// Load .env if present; ignore the error so the program still runs
+	// when env vars are exported in the shell instead.
+	_ = godotenv.Load()
+
 	endpoint := os.Getenv("FOUNDRY_PROJECT_ENDPOINT")
 	if endpoint == "" {
 		log.Fatal("FOUNDRY_PROJECT_ENDPOINT is required")
