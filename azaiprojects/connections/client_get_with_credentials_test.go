@@ -17,7 +17,7 @@ func TestGetWithCredentials_FiresGetByName(t *testing.T) {
 		t.Fatalf("GetWithCredentials: %v", err)
 	}
 
-	if got, want := ft.gotReq.Method, http.MethodGet; got != want {
+	if got, want := ft.gotReq.Method, http.MethodPost; got != want {
 		t.Errorf("method = %s, want %s", got, want)
 	}
 	if got, want := ft.gotReq.URL.Path, "/connections/c1/getConnectionWithCredentials"; got != want {

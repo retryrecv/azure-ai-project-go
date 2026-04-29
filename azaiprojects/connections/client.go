@@ -179,15 +179,22 @@ type GetWithCredentialsResponse struct {
 
 // GetWithCredentials retrieves a single connection by name, including credentials.
 //
-// Mirrors GET /connections/{name}/getConnectionWithCredentials?api-version=v1.
+// Mirrors POST /connections/{name}/getConnectionWithCredentials?api-version=v1.
+// (The endpoint takes POST, not GET — verified against the live service.)
 func (c *Client) GetWithCredentials(ctx context.Context, name string, _ *GetWithCredentialsOptions) (GetWithCredentialsResponse, error) {
 	if name == "" {
 		return GetWithCredentialsResponse{}, errors.New("connections.GetWithCredentials: name is required")
 	}
-	req, err := c.newGetRequest(ctx, "/connections/"+name+"/getConnectionWithCredentials")
+	url := c.endpoint + "/connections/" + name + "/getConnectionWithCredentials"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, url)
 	if err != nil {
 		return GetWithCredentialsResponse{}, err
 	}
+	q := req.Raw().URL.Query()
+	q.Set("api-version", c.apiVersion)
+	req.Raw().URL.RawQuery = q.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+
 	resp, err := c.pl.Do(req)
 	if err != nil {
 		return GetWithCredentialsResponse{}, err
