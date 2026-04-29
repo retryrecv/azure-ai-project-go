@@ -2,10 +2,16 @@ Session 1 — Initializer
 
 Scaffolded project per ~/.claude/bg-tasks/long-run-task.md.
 - CLAUDE.md describing layout, startup sequence, end-of-session rules.
-- feature_list.json with decomposed core-surface tasks (priority order: infra → connections → deployments → indexes → datasets, with examples last).
+- feature_list.json with decomposed core-surface tasks.
 - init.sh smoke-tests with `go build`, `go vet`, `go test` once go.mod exists.
 - No feature code written. Awaiting "resume long run" to begin task 1.
 
 Reference SDK: /Users/goubo/projects/azure-sdk-for-js/sdk/ai/ai-projects
 TS public API: src/index.ts exports
 Samples: samples-dev/<group>/<name>Basics.ts
+
+--- Session 2 ---
+Feature: full-smoke (and all 32 prior tasks)
+What I did: Implemented every task in feature_list.json from go-module-init through full-smoke. Built azaiprojects.Client with bearer auth and v1 api-version, plus four operation groups (connections, deployments, indexes, datasets) each with their own NewClient/NewClientFromPipeline and unit tests using fake transporters. AIProjectClient.Connections/Deployments/Indexes/Datasets accessors share the parent pipeline. examples/{connections,deployments,indexes,datasets} compile and mirror the TS samples-dev/*Basics.ts programs.
+Next: none — all tasks pass.
+Issues: none. A few tasks were combined into single commits where they were small and shared a file (deployments-list+get, indexes-list-versions+get+CoU+delete, datasets client). Bytes-of-work-per-commit slightly above the strict one-task-per-commit ideal in those spots; future sessions should split unless deliberately bundling.
