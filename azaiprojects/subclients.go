@@ -5,6 +5,7 @@ import (
 	"github.com/sambo/ai-projects-go/azaiprojects/connections"
 	"github.com/sambo/ai-projects-go/azaiprojects/datasets"
 	"github.com/sambo/ai-projects-go/azaiprojects/deployments"
+	"github.com/sambo/ai-projects-go/azaiprojects/evaluationrules"
 	"github.com/sambo/ai-projects-go/azaiprojects/indexes"
 )
 
@@ -35,4 +36,9 @@ func (c *Client) Datasets() *datasets.Client {
 // Agents returns the Agents operation group.
 func (c *Client) Agents() *agents.Client {
 	return agents.NewClientFromPipeline(c.endpoint, c.apiVersion, c.pl)
+}
+
+// EvaluationRules returns the EvaluationRules operation group.
+func (c *Client) EvaluationRules() *evaluationrules.Client {
+	return evaluationrules.NewClientFromPipeline(c.endpoint, c.apiVersion, c.pl)
 }

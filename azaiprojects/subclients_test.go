@@ -23,4 +23,7 @@ func TestSubClientAccessors(t *testing.T) {
 	if c.Agents() == nil || c.Agents().Endpoint() != "https://example.test" {
 		t.Errorf("Agents() endpoint = %q", c.Agents().Endpoint())
 	}
+	if c.EvaluationRules() == nil || c.EvaluationRules().Endpoint() != "https://example.test" {
+		t.Errorf("EvaluationRules() endpoint = %q", c.EvaluationRules().Endpoint())
+	}
 }
