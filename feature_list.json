@@ -31,7 +31,7 @@
       "Run: go vet ./...",
       "Verify exit code 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "client-options-and-api-version",
