@@ -1135,26 +1135,26 @@
     "subTasks": [
       {
         "subject": "Survey TS src/api/beta/redTeams/operations.ts; note RedTeam shape",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create models.go (RedTeam, AttackStrategy / RiskCategory unions as json.RawMessage)",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create client.go and implement Create (POST /redTeams/runs:run), List, Get",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Unit tests",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Run: go test ./azaiprojects/beta/redteams/... \u2014 all green",
-        "passes": false
+        "passes": true
       }
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "beta-memorystores",
