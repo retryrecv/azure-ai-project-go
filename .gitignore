@@ -9,6 +9,12 @@
 /dist/
 *.test
 *.out
+# Stray binaries dropped at the repo root by `go build ./examples/<name>/...`
+/agents
+/connections
+/datasets
+/deployments
+/indexes
 
 # Local env
 .env
