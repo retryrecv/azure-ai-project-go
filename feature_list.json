@@ -1167,34 +1167,34 @@
     "subTasks": [
       {
         "subject": "Survey TS src/api/beta/memoryStores/operations.ts; note MemoryStore, MemoryStoreDefinitionUnion, search/update result shapes",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create models.go (MemoryStore + Definition union dispatcher as json.RawMessage; SearchResult, UpdateResult)",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Create client.go",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Implement Create, Get, List (cursor), Update, Delete",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Implement UpdateMemories (POST :update_memories), SearchMemories (POST :search_memories), DeleteScope (POST :delete_scope), GetUpdateResult (GET /updates/{id})",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Unit tests",
-        "passes": false
+        "passes": true
       },
       {
         "subject": "Run: go test ./azaiprojects/beta/memorystores/... \u2014 all green",
-        "passes": false
+        "passes": true
       }
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "beta-insights",
