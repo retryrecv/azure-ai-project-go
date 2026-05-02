@@ -3,7 +3,7 @@ package toolboxes
 import (
 	"encoding/json"
 
-	"github.com/sambo/ai-projects-go/azaiprojects/internal/shared"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/internal/shared"
 )
 
 // ToolboxObject is a toolbox resource (without versions).

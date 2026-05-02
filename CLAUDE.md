@@ -1,4 +1,4 @@
-# ai-projects-go
+# azure-ai-projects-go
 
 Go port of the `@azure/ai-projects` JavaScript SDK. Hand-written REST-style client built on `github.com/Azure/azure-sdk-for-go/sdk/azcore`. Mirrors the public TypeScript surface (`AIProjectClient` + operation groups: connections, deployments, datasets, indexes for the core scope).
 
@@ -13,7 +13,7 @@ Go port of the `@azure/ai-projects` JavaScript SDK. Hand-written REST-style clie
 ## Module
 
 ```
-github.com/sambo/ai-projects-go
+github.com/retryrecv/azure-ai-projects-go
 ```
 
 (Local module — not published. Importable from `examples/` and tests.)
@@ -35,7 +35,7 @@ examples/                      # one runnable program per group, mirrors samples
 
 ## Startup sequence (every session)
 
-1. `pwd` — confirm in `/Users/goubo/projects/ai-projects-go`
+1. `pwd` — confirm in `/Users/goubo/projects/azure-ai-projects-go`
 2. `cat claude-progress.txt && git log --oneline -10`
 3. `bash init.sh` — fetches deps, runs `go build ./...` and `go test ./...` smoke test
 4. If smoke test fails, fix before anything else

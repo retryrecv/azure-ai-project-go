@@ -11,15 +11,15 @@ package beta
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/agents"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/evaluationtaxonomies"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/evaluators"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/insights"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/memorystores"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/redteams"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/schedules"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/skills"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta/toolboxes"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/agents"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/evaluationtaxonomies"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/evaluators"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/insights"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/memorystores"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/redteams"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/schedules"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/skills"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta/toolboxes"
 )
 
 // Operations is the beta operation group container.

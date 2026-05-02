@@ -1,4 +1,4 @@
-module github.com/sambo/ai-projects-go
+module github.com/retryrecv/azure-ai-projects-go
 
 go 1.26.2
 

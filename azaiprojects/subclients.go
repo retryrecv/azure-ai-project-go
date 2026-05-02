@@ -1,13 +1,13 @@
 package azaiprojects
 
 import (
-	"github.com/sambo/ai-projects-go/azaiprojects/agents"
-	"github.com/sambo/ai-projects-go/azaiprojects/beta"
-	"github.com/sambo/ai-projects-go/azaiprojects/connections"
-	"github.com/sambo/ai-projects-go/azaiprojects/datasets"
-	"github.com/sambo/ai-projects-go/azaiprojects/deployments"
-	"github.com/sambo/ai-projects-go/azaiprojects/evaluationrules"
-	"github.com/sambo/ai-projects-go/azaiprojects/indexes"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/agents"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/beta"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/connections"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/datasets"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/deployments"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/evaluationrules"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/indexes"
 )
 
 // Connections returns the Connections operation group.

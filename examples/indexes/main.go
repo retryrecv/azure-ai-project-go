@@ -10,8 +10,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/joho/godotenv"
 
-	"github.com/sambo/ai-projects-go/azaiprojects"
-	"github.com/sambo/ai-projects-go/azaiprojects/indexes"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/indexes"
 )
 
 func main() {

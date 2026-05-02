@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-	"github.com/sambo/ai-projects-go/azaiprojects/internal/shared"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/internal/shared"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/sambo/ai-projects-go/azaiprojects/internal/shared"
+	"github.com/retryrecv/azure-ai-projects-go/azaiprojects/internal/shared"
 )
 
 // Insight represents an insights report.
