@@ -7,18 +7,12 @@
 # Go build output
 /bin/
 /dist/
-*.test
 *.out
-# Stray binaries dropped at the repo root by `go build ./examples/<name>/...`
-/agents
-/connections
-/datasets
-/deployments
-/evaluationrules
-/indexes
 
 # Local env
 .env
 
 # scratch notes (out of git)
 .scratch/
+feature_list.json
+claude-progress.txt
